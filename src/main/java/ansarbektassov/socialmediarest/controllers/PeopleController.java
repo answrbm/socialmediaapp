@@ -34,9 +34,9 @@ public class PeopleController {
     }
 
     @GetMapping("/{personId}")
-    public PersonRegisterDTO findById(@PathVariable("personId") int personId) {
+    public PersonDTO findById(@PathVariable("personId") int personId) {
         Person person = peopleService.findById(personId);
-        return convertToPersonRegisterDTO(person);
+        return convertToPersonDTO(person);
     }
 
     @PutMapping("/{personId}")
@@ -51,10 +51,6 @@ public class PeopleController {
     public Map<String,String> delete(@PathVariable("personId") int personId) {
         peopleService.delete(personId);
         return Map.of("message","deleted");
-    }
-
-    public PersonRegisterDTO convertToPersonRegisterDTO(Person person) {
-        return modelMapper.map(person,PersonRegisterDTO.class);
     }
 
     public PersonDTO convertToPersonDTO(Person person) {
