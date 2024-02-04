@@ -30,6 +30,11 @@ public class FriendshipsController {
         return convertToFriendshipDTO(friendshipsService.findById(friendshipId));
     }
 
+    @GetMapping("/people")
+    public FriendshipDTO findByPersonId(@RequestParam("personId") int personId) {
+        return convertToFriendshipDTO(friendshipsService.findByPersonId(personId));
+    }
+
     @PostMapping
     public Map<String, String> subscribe(@RequestParam("personId") int personId) {
         friendshipsService.subscribe(personId);

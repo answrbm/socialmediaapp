@@ -11,21 +11,12 @@ import ansarbektassov.socialmediarest.exceptions.post.PostNotCreatedException;
 import ansarbektassov.socialmediarest.exceptions.post.PostNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionsHandlerController {
-
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    public ResponseEntity<ErrorResponse> handleAuthException(AuthenticationCredentialsNotFoundException e) {
-//        ErrorResponse response = new ErrorResponse(e.getMessage());
-//        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)

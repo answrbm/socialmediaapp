@@ -8,13 +8,10 @@ import ansarbektassov.socialmediarest.repositories.FriendshipsRepository;
 import ansarbektassov.socialmediarest.util.FriendshipStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -43,18 +40,37 @@ public class FriendshipsService {
                 .findAny().orElseThrow(FriendshipNotFoundException::new);
     }
 
+    public Friendship findByPersonId(int personId) {
+        Person foundPerson = peopleService.findById(personId);
+        try {
+            return findByReceiver(foundPerson);
+        } catch (FriendshipNotFoundException e) {
+            // trying to find as subscriber
+            return findBySubscriber(foundPerson);
+        }
+    }
+
     public List<Friendship> findByUsername(String username) {
         return findAll().stream().filter(fsh ->
                         fsh.getReceiver().getUsername().equals(username)
                                 || fsh.getSubscriber().getUsername().equals(username)).toList();
     }
 
-    public List<Friendship> findByReceiver(Person receiver) {
-        return friendshipRepository.findByReceiver(receiver);
+    public Friendship findByReceiver(Person receiver) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return friendshipRepository.findByReceiver(receiver).stream()
+                .filter(friendship ->
+                        friendship.getSubscriber().getUsername().equals(username))
+                .findAny()
+                .orElseThrow(FriendshipNotFoundException::new);
     }
 
-    public List<Friendship> findBySubscriber(Person subscriber) {
-        return friendshipRepository.findBySubscriber(subscriber);
+    public Friendship findBySubscriber(Person subscriber) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return friendshipRepository.findBySubscriber(subscriber).stream()
+                .filter(friendship -> friendship.getReceiver().getUsername().equals(username))
+                .findAny()
+                .orElseThrow(FriendshipNotFoundException::new);
     }
 
     public void subscribe(int receiverId) {
