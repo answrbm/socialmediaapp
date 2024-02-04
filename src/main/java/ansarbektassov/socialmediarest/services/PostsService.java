@@ -38,21 +38,34 @@ public class PostsService {
         return postsRepository.findById(id).orElseThrow(PostNotFoundException::new);
     }
 
+    public List<Post> findByCreator(Person creator) {
+        return postsRepository.findByCreator(creator);
+    }
+
+    public List<Post> findByCreator(int personId) {
+        Person foundPerson = peopleService.findById(personId);
+        return postsRepository.findByCreator(foundPerson);
+    }
+
     public List<Post> findByFriendships(List<Friendship> friendships) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List<Post> friendsPosts = new ArrayList<>();
+        boolean isMainUserUsed = false;
         for(Friendship f : friendships) {
-            if(f.getFriendshipStatus() == FriendshipStatus.FRIEND ||
-                    f.getSubscriber().getUsername().equals(username)) {
+            if(!f.getReceiver().getUsername().equals(username)) {
+                friendsPosts.addAll(findByCreator(f.getReceiver()));
+            } else if(!isMainUserUsed) {
+                friendsPosts.addAll(findByCreator(f.getReceiver()));
+                isMainUserUsed = true;
+            }
 
-                friendsPosts.addAll(findAll().stream().filter(post ->
-                        (post.getCreator().getUsername().equals(f.getReceiver().getUsername()) ||
-                                post.getCreator().getUsername().equals(f.getSubscriber().getUsername())))
-                        .toList());
-
+            if(!f.getSubscriber().getUsername().equals(username)) {
+                friendsPosts.addAll(findByCreator(f.getSubscriber()));
+            } else if(!isMainUserUsed) {
+                friendsPosts.addAll(findByCreator(f.getSubscriber()));
+                isMainUserUsed = true;
             }
         }
-        friendsPosts.addAll(findByUsername(username));
         return friendsPosts;
     }
 

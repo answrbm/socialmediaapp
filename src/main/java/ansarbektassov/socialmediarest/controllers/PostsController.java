@@ -32,9 +32,14 @@ public class PostsController {
         return postsService.findAll().stream().map(this::convertToPostDTO).toList();
     }
 
-    @GetMapping("/{postId}")
-    public PostDTO findById(@PathVariable("postId") int postId) {
-        return convertToPostDTO(postsService.findById(postId));
+//    @GetMapping("/{postId}")
+//    public PostDTO findById(@PathVariable("postId") int postId) {
+//        return convertToPostDTO(postsService.findById(postId));
+//    }
+
+    @GetMapping("/{personId}")
+    public List<PostDTO> findByPersonId(@PathVariable("personId") int personId) {
+        return postsService.findByCreator(personId).stream().map(this::convertToPostDTO).toList();
     }
 
     @PostMapping
