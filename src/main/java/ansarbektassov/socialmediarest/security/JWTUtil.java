@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -19,6 +20,7 @@ public class JWTUtil {
 
         return JWT.create()
                 .withSubject("User details")
+                .withClaim("personId",person.getPersonId())
                 .withClaim("username",person.getUsername())
                 .withClaim("email",person.getEmail())
                 .withClaim("name",person.getName())
