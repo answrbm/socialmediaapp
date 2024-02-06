@@ -14,7 +14,7 @@ public class Friendship {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "friendship_id")
     private int friendshipId;
     @NotNull(message = "Friendship status shouldn't be null")
     @Enumerated(EnumType.STRING)
@@ -24,11 +24,11 @@ public class Friendship {
     private LocalDateTime friendshipDate;
 
     @OneToOne
-    @JoinColumn(name = "receiver_id", referencedColumnName = "id")
+    @JoinColumn(name = "receiver_id", referencedColumnName = "person_id")
     private Person receiver;
 
     @OneToOne
-    @JoinColumn(name = "subscriber_id", referencedColumnName = "id")
+    @JoinColumn(name = "subscriber_id", referencedColumnName = "person_id")
     private Person subscriber;
 
 }

@@ -15,7 +15,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "post_id")
     private int postId;
     @NotEmpty(message = "Title shouldn't be empty")
     @NotNull(message = "Title shouldn't be null")
@@ -31,7 +31,7 @@ public class Post {
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person creator;
 
 }

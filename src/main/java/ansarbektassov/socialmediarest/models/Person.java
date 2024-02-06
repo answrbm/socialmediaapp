@@ -16,7 +16,7 @@ public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "person_id")
     private int personId;
     @NotNull(message = "Username shouldn't be null")
     @NotEmpty(message = "Username shouldn't be empty")
