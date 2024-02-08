@@ -1,10 +1,12 @@
 package ansarbektassov.socialmediarest.services;
 
 import ansarbektassov.socialmediarest.dto.PersonUpdateDTO;
+import ansarbektassov.socialmediarest.exceptions.person.PersonNotCreatedException;
 import ansarbektassov.socialmediarest.exceptions.person.PersonNotFoundException;
 import ansarbektassov.socialmediarest.models.Person;
 import ansarbektassov.socialmediarest.repositories.PeopleRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,14 +39,24 @@ public class PeopleService {
     }
 
     public void update(int personId, PersonUpdateDTO personUpdateDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Person person = findById(personId);
-        person.setName(personUpdateDTO.getName());
-        save(person);
+        if(person.getUsername().equals(username)) {
+            person.setName(personUpdateDTO.getName());
+            save(person);
+        } else {
+            throw new PersonNotCreatedException("Cannot modify not you profile");
+        }
     }
 
     public void delete(int personId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Person person = findById(personId);
-        peopleRepository.delete(person);
+        if(person.getUsername().equals(username)) {
+            peopleRepository.delete(person);
+        } else {
+            throw new PersonNotCreatedException("Cannot delete not you profile");
+        }
     }
 
 
