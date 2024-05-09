@@ -138,3 +138,13 @@ Feeds
 You can get the latest created posts of users
 
 Get latests feeds: /api/feeds GET
+
+**************************************
+
+PROPERTIES
+
+DB_HOST=monorail.proxy.rlwy.net
+DB_PORT=13967
+DB_NAME=railway
+DB_PASSWORD=vrwUuBgSeeuiTfhfXHdivOmyDnjbZVrc
+DB_USERNAME=postgres
