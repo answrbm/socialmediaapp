@@ -19,13 +19,14 @@ public class FeedsService {
     private final FriendshipsService friendshipsService;
 
     public List<PostDTO> findAll() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Friendship> friendships = friendshipsService.findByUsername(username);
-        List<Friendship> filteredFriendships = friendships.stream()
-                .filter(friendship -> friendship.getFriendshipStatus() == FriendshipStatus.FRIEND ||
-                friendship.getSubscriber().getUsername().equals(username)).toList();
-
-        List<PostDTO> posts = new ArrayList<>(postsService.findByFriendships(filteredFriendships).stream()
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//        List<Friendship> friendships = friendshipsService.findByUsername(username);
+//        List<Friendship> filteredFriendships = friendships.stream()
+//                .filter(friendship -> friendship.getFriendshipStatus() == FriendshipStatus.FRIEND ||
+//                friendship.getSubscriber().getUsername().equals(username)).toList();
+//
+//        List<PostDTO> posts = new ArrayList<>(postsService.findByFriendships(filteredFriendships).stream()
+        List<PostDTO> posts = new ArrayList<>(postsService.findAll().stream()
                 .map(postsService::convertToPostDTO).toList());
         posts.sort((o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
         return posts;
